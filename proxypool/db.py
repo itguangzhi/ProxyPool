@@ -12,6 +12,8 @@ class RedisClient(object):
 
     def get(self, count=1):
         """
+        从队列左侧批量获取的方法
+        获取数量最少1个
         get proxies from redis
         """
         proxies = self._db.lrange("proxies", 0, count - 1)
@@ -20,12 +22,14 @@ class RedisClient(object):
 
     def put(self, proxy):
         """
+        将代理放在队列右侧
         add proxy to right top
         """
         self._db.rpush("proxies", proxy)
 
     def pop(self):
         """
+        为API提供服务，从右侧拿出一个可用代理
         get proxy from right.
         """
         try:
